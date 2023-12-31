@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login with Google</title>
+  <!-- Include the Google Sign-In API -->
+  <script src="https://accounts.google.com/gsi/clientm" async defer></script>
+  
+  <style>
+    body {
+      background-color: purple;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    
+    #container {
+      background-color: black;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    #loginButton {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="g_id_onload"
+         data-client_id="560787126153-4v5jka76dco5sj7d8vffr2mn625qtlij.apps.googleusercontent.com"
+         data-callback="handleCredentialResponse"></div>
+
+    <div id="loginButton"></div>
+  </div>
+  
+  <script>
+    function handleCredentialResponse(response) {
+      // Get the user's ID token and send it to the server for verification
+      var id_token = response.credential;
+      
+      // Send the id_token to your server using an API call or AJAX request
+      // Example: sendToServer(id_token);
+
+      // Dummy function to log the user in on client-side
+      loginUser(response);
+    }
+    
+    function loginUser(response) {
+      // Extract user information from the response
+      var user = response['profileObj'];
+      var name = user.name;
+      var email = user.email;
+      // You can now use the user information to authenticate the user on the client-side or send it to the server
+      
+      alert("Welcome " + name + "!");
+    }
+    
+    // Render the Google Sign-In button
+    function renderButton() {
+      gapi.signin2.render('loginButton', {
+        'scope': 'email profile',
+        'width': 200,
+        'height': 50,
+        'longtitle': true,
+        'theme': 'dark',
+        'onsuccess': onSignIn
+      });
+    }
+    
+    // Callback function triggered when the user successfully signs in
+    function onSignIn(googleUser) {
+      // Get the user's ID token and credential
+      var credential = googleUser.getAuthResponse();
+      
+      // Handle the credential response
+      handleCredentialResponse(credential);
+    }
+  </script>
+  
+  <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+</body>
+</html>
